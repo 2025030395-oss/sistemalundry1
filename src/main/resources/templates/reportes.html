@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Reglas de Impresión / Generación PDF Horizontal -->
+    <style>
+        @media print {
+            @page {
+                size: landscape;
+                margin: 10mm;
+            }
+            /* Ocultar barra lateral, botones, header y modales al imprimir */
+            .w-64, header, #btnGenerarReporte, #modalExito, #modalPrendas {
+                display: none !important;
+            }
+            body, div, main {
+                overflow: visible !important;
+                height: auto !important;
+                background-color: white !important;
+            }
+            main {
+                padding: 0 !important;
+            }
+            /* Ajuste de cuadrícula para que ocupe todo el ancho en el PDF */
+            .grid {
+                display: grid !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen text-gray-800 overflow-hidden" style="font-family: 'Inter', sans-serif;">
+
+<div class="w-64 bg-[#0a369d] text-white flex flex-col justify-between shadow-lg shrink-0">
+    <div>
+        <div class="h-16 bg-[#041231] flex items-center justify-center">
+            <img th:src="@{/sulaundry.jpeg}" src="/sulaundry.jpeg" alt="SU Laundry Logo" class="h-full w-full object-cover">
+        </div>
+
+        <nav class="mt-6 px-4 space-y-2">
+            <a th:href="@{/index}" href="/index" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Inicio</span>
+            </a>
+            <a th:href="@{/pedidos}" href="/pedidos" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a th:href="@{/clientes}" href="/clientes" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/inventario}" href="/inventario" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Inventario</span>
+            </a>
+            <a th:href="@{/caja}" href="/caja" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                <span>Caja</span>
+            </a>
+            <a th:href="@{/reportes}" href="/reportes" class="flex items-center space-x-3 bg-[#cbdcf7] text-[#0a369d] py-3 px-4 rounded-xl font-semibold shadow-xs">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Reportes</span>
+            </a>
+            <a th:href="@{/perfil}" href="/perfil" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-white/10 text-[10px] text-white/60">
+        © SU laundry - Sistema de gestión
+    </div>
+</div>
+
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Reportes</h1>
+            <p class="text-xs text-gray-400 font-medium">Resumen general de tu lavandería</p>
+        </div>
+
+        <div class="relative">
+            <button id="btn-usuario-menu" class="flex items-center space-x-4 hover:opacity-80 transition cursor-pointer text-left focus:outline-hidden">
+                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-sm shrink-0">
+                    PM
+                </div>
+                <div class="text-left leading-tight">
+                    <p class="text-sm font-bold text-gray-700">Paulina Martínez</p>
+                    <p class="text-xs text-gray-400 font-medium">Administradora</p>
+                </div>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+            </button>
+
+            <div id="menu-usuario-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl border border-gray-100 shadow-xl py-2 z-50 hidden opacity-0 transition-all duration-200 origin-top-right transform scale-95">
+                <a th:href="@{/perfil}" href="/perfil" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition">
+                    <i data-lucide="user" class="w-4 h-4 text-gray-400"></i>
+                    <span>Mi Perfil</span>
+                </a>
+                <button class="w-full flex items-center space-x-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer text-left">
+                    <i data-lucide="users" class="w-4 h-4 text-gray-400"></i>
+                    <span>Cambiar de cuenta</span>
+                </button>
+                <hr class="border-gray-100 my-1">
+                <a th:href="@{/login}" class="w-full flex items-center space-x-2.5 px-4 py-2.5 text-xs font-bold text-red-600 hover:bg-red-50/50 transition cursor-pointer text-left">
+                    <i data-lucide="log-out" class="w-4 h-4 text-red-500"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-8 flex-1 overflow-y-auto space-y-8">
+
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex items-center justify-between flex-wrap gap-6">
+            <button id="btnGenerarReporte" class="bg-[#0a369d] text-white text-sm font-bold px-6 py-3 rounded-xl flex items-center space-x-2 hover:bg-[#082c7f] transition shadow-md shadow-blue-900/10 active:scale-95 cursor-pointer">
+                <i data-lucide="plus" class="w-5 h-5"></i>
+                <span>Generar reporte</span>
+            </button>
+
+            <div class="flex items-center space-x-6">
+                <div>
+                    <label class="block text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1.5">Periodo</label>
+                    <div class="relative">
+                        <select class="appearance-none bg-gray-50 border border-gray-200 rounded-xl py-2.5 pl-4 pr-10 text-xs font-semibold text-gray-600 w-48 focus:outline-hidden focus:border-[#0a369d] cursor-pointer">
+                            <option>Este mes</option>
+                            <option>Esta semana</option>
+                            <option>Personalizado</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1.5">Desde:</label>
+                    <input type="date" value="2026-06-06" class="bg-gray-50 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-600 w-40 focus:outline-hidden focus:border-[#0a369d] cursor-pointer color-gray-500">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1.5">Hasta</label>
+                    <input type="date" value="2026-06-18" class="bg-gray-50 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-600 w-40 focus:outline-hidden focus:border-[#0a369d] cursor-pointer color-gray-500">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+
+            <div class="space-y-6">
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs flex items-center justify-between hover:border-[#0a369d]/20 transition">
+                    <div class="flex items-center space-x-5">
+                        <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-tight">Pedidos realizados</p>
+                            <p class="text-2xl font-black text-gray-900" th:text="${totalPedidos}">0</p>
+                        </div>
+                    </div>
+                    <a th:href="@{/pedidos}" href="/pedidos" class="text-[#0a369d] text-xs font-bold flex items-center gap-1.5 hover:underline">Ver todos <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs flex items-center justify-between hover:border-[#0a369d]/20 transition">
+                    <div class="flex items-center space-x-5">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="banknote" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-tight">Ingresos totales</p>
+                            <p class="text-2xl font-black text-gray-900" th:text="${'$' + #numbers.formatDecimal(ingresosTotales, 1, 2)}">$0.00</p>
+                        </div>
+                    </div>
+                    <a th:href="@{/caja}" href="/caja" class="text-[#0a369d] text-xs font-bold flex items-center gap-1.5 hover:underline">Ver todos <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs flex items-center justify-between hover:border-[#0a369d]/20 transition">
+                    <div class="flex items-center space-x-5">
+                        <div class="w-14 h-14 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="shirt" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-tight">Prendas lavadas</p>
+                            <p class="text-2xl font-black text-gray-900" th:text="${prendasLavadas}">0</p>
+                        </div>
+                    </div>
+                    <button id="btnVerPrendas" class="text-[#0a369d] text-xs font-bold flex items-center gap-1.5 hover:underline bg-transparent border-none p-0 cursor-pointer">Ver todos <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs flex items-center justify-between hover:border-[#0a369d]/20 transition">
+                    <div class="flex items-center space-x-5">
+                        <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="droplet" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-tight">Gasto de agua</p>
+                            <p class="text-2xl font-black text-gray-900" th:text="${#numbers.formatInteger(gastoAgua, 1, 'POINT') + ' L'}">0 L</p>
+                        </div>
+                    </div>
+                    <a th:href="@{/gasto-agua}" href="/gasto-agua" class="text-[#0a369d] text-xs font-bold flex items-center gap-1.5 hover:underline">Ver todos <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+                    <h3 class="text-sm font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <span class="w-1 h-4 bg-[#0a369d] rounded-full"></span> Pedidos por estado
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-gray-700">Listos</span>
+                                <span class="text-[#0a369d]" th:text="${porcentajeListos + '%'}">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full rounded-full" th:style="'width: ' + ${porcentajeListos} + '%'"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-gray-700">En proceso</span>
+                                <span class="text-[#0a369d]" th:text="${porcentajeProceso + '%'}">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full rounded-full" th:style="'width: ' + ${porcentajeProceso} + '%'"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-2">
+                                <span class="text-gray-700">Pendientes</span>
+                                <span class="text-[#0a369d]" th:text="${porcentajePendientes + '%'}">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-red-500 h-full rounded-full" th:style="'width: ' + ${porcentajePendientes} + '%'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DINÁMICA DE PRODUCTOS -->
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+                    <h3 class="text-sm font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <span class="w-1 h-4 bg-[#0a369d] rounded-full"></span> Uso detallado de productos
+                    </h3>
+
+                    <div class="divide-y divide-gray-50 text-xs font-semibold">
+                        <div th:each="prod : ${productosUso}" class="flex justify-between py-3.5">
+                            <span class="text-gray-500" th:text="${prod.nombre}">Producto</span>
+                            <span class="text-gray-900" th:text="${prod.cantidadConUnidad}">0</span>
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(productosUso)}" class="py-3.5 text-center text-gray-400">
+                            No hay productos registrados
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-2 border-t border-gray-50 flex justify-end">
+                        <a th:href="@{/inventario}" href="/inventario" class="text-[#0a369d] text-xs font-bold flex items-center gap-1.5 hover:underline">
+                            Ver todos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs min-h-full">
+                <h3 class="text-sm font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <span class="w-1 h-4 bg-[#0a369d] rounded-full"></span> Tipo de lavado
+                </h3>
+
+                <div class="space-y-6">
+                    <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-6 transition hover:bg-emerald-50">
+                        <h4 class="text-sm font-extrabold text-emerald-800 mb-4">Lavado compartido</h4>
+                        <div class="space-y-3 text-xs font-bold">
+                            <div class="flex justify-between text-emerald-900/60 uppercase text-[10px]"><span>Pedidos:</span><span class="text-emerald-900" th:text="${pedidosCompartidos}">0</span></div>
+                            <div class="flex justify-between text-emerald-900/60 uppercase text-[10px]"><span>Ingresos:</span><span class="text-emerald-900" th:text="${'$' + #numbers.formatDecimal(ingresosCompartidos, 1, 2)}">$0.00</span></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 transition hover:bg-blue-50">
+                        <h4 class="text-sm font-extrabold text-[#0a369d] mb-4">Lavado Exclusivo</h4>
+                        <div class="space-y-3 text-xs font-bold">
+                            <div class="flex justify-between text-[#0a369d]/60 uppercase text-[10px]"><span>Pedidos:</span><span class="text-[#0a369d]" th:text="${pedidosExclusivos}">0</span></div>
+                            <div class="flex justify-between text-[#0a369d]/60 uppercase text-[10px]"><span>Ingresos:</span><span class="text-[#0a369d]" th:text="${'$' + #numbers.formatDecimal(ingresosExclusivos, 1, 2)}">$0.00</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<!-- Modales -->
+<div id="modalExito" class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-10 max-w-md w-full mx-4 shadow-2xl flex flex-col items-center text-center transform scale-95 transition-transform duration-300 relative" id="modalContent">
+        <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center text-white mb-6 shadow-md shadow-emerald-500/20">
+            <i data-lucide="check" class="w-10 h-10 stroke-[3.5]"></i>
+        </div>
+        <h2 class="text-2xl font-black text-gray-900 mb-2 tracking-tight">¡Listo!</h2>
+        <p class="text-sm font-semibold text-gray-700 leading-relaxed max-w-[280px]">Se ha abierto la vista previa de tu reporte PDF</p>
+        <button id="btnCerrarModal" class="mt-8 bg-gray-100 text-gray-600 text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-gray-200 transition cursor-pointer">
+            Entendido
+        </button>
+    </div>
+</div>
+
+<div id="modalPrendas" class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300 relative flex flex-col max-h-[85vh]" id="modalPrendasContent">
+
+        <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-6 shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center">
+                    <i data-lucide="shirt" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-black text-gray-900 tracking-tight">Producción de Prendas</h2>
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Desglose del periodo seleccionado</p>
+                </div>
+            </div>
+            <button id="btnCerrarPrendas" class="w-8 h-8 rounded-full bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition flex items-center justify-center cursor-pointer">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="overflow-y-auto space-y-6 flex-1 pr-1">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-50/50 border border-gray-100 p-4 rounded-2xl text-center">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Volumen Total</p>
+                    <p class="text-xl font-black text-purple-600" th:text="${(prendasLavadas * 2.5) + ' Kg'}">0 Kg</p>
+                </div>
+                <div class="bg-gray-50/50 border border-gray-100 p-4 rounded-2xl text-center">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Piezas Especiales</p>
+                    <p class="text-xl font-black text-blue-600" th:text="${prendasLavadas + ' pzas'}">0 pzas</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Detalle por Categoría</h3>
+                <div class="border border-gray-100 rounded-2xl overflow-hidden text-xs">
+                    <div class="bg-gray-50 px-4 py-3 font-bold text-gray-500 grid grid-cols-2 border-b border-gray-100">
+                        <span>Categoría / Servicio</span>
+                        <span class="text-right">Volumen Procesado</span>
+                    </div>
+                    <div class="divide-y divide-gray-100 font-semibold text-gray-700">
+                        <div class="px-4 py-3.5 grid grid-cols-2 bg-white hover:bg-gray-50/30">
+                            <span>Ropa por Kilo (General)</span>
+                            <span class="text-right font-bold text-gray-900" th:text="${(prendasLavadas * 2.5) + ' Kg'}">0 Kg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end shrink-0">
+            <button id="btnEntendidoPrendas" class="bg-[#0a369d] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#082c7f] transition cursor-pointer shadow-sm">
+                Cerrar Ventana
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    const btnGenerar = document.getElementById('btnGenerarReporte');
+    const modalExito = document.getElementById('modalExito');
+    const modalContent = document.getElementById('modalContent');
+    const btnCerrar = document.getElementById('btnCerrarModal');
+
+    btnGenerar.addEventListener('click', () => {
+        // Lanzar la impresión nativa a PDF inmediatamente
+        window.print();
+
+        // Mostrar el modal de confirmación después de la impresión
+        setTimeout(() => {
+            modalExito.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }, 500);
+    });
+
+    btnCerrar.addEventListener('click', () => {
+        modalExito.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+    });
+
+    modalExito.addEventListener('click', (e) => {
+        if (e.target === modalExito) btnCerrar.click();
+    });
+
+    const btnVerPrendas = document.getElementById('btnVerPrendas');
+    const modalPrendas = document.getElementById('modalPrendas');
+    const modalPrendasContent = document.getElementById('modalPrendasContent');
+    const btnCerrarPrendas = document.getElementById('btnCerrarPrendas');
+    const btnEntendidoPrendas = document.getElementById('btnEntendidoPrendas');
+
+    const abrirModalPrendas = () => {
+        modalPrendas.classList.remove('opacity-0', 'pointer-events-none');
+        modalPrendasContent.classList.remove('scale-95');
+        modalPrendasContent.classList.add('scale-100');
+    };
+
+    const cerrarModalPrendas = () => {
+        modalPrendas.classList.add('opacity-0', 'pointer-events-none');
+        modalPrendasContent.classList.remove('scale-100');
+        modalPrendasContent.classList.add('scale-95');
+    };
+
+    if(btnVerPrendas) btnVerPrendas.addEventListener('click', abrirModalPrendas);
+    if(btnCerrarPrendas) btnCerrarPrendas.addEventListener('click', cerrarModalPrendas);
+    if(btnEntendidoPrendas) btnEntendidoPrendas.addEventListener('click', cerrarModalPrendas);
+    modalPrendas.addEventListener('click', (e) => {
+        if (e.target === modalPrendas) cerrarModalPrendas();
+    });
+
+    const btnUsuarioMenu = document.getElementById('btn-usuario-menu');
+    const menuUsuarioDropdown = document.getElementById('menu-usuario-dropdown');
+
+    if (btnUsuarioMenu && menuUsuarioDropdown) {
+        btnUsuarioMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = menuUsuarioDropdown.classList.contains('hidden');
+
+            if (isHidden) {
+                menuUsuarioDropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    menuUsuarioDropdown.classList.remove('opacity-0', 'scale-95');
+                    menuUsuarioDropdown.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                ocultarDropdownUsuario();
+            }
+        });
+
+        function ocultarDropdownUsuario() {
+            menuUsuarioDropdown.classList.remove('opacity-100', 'scale-100');
+            menuUsuarioDropdown.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                menuUsuarioDropdown.classList.add('hidden');
+            }, 200);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!menuUsuarioDropdown.contains(e.target) && !btnUsuarioMenu.contains(e.target)) {
+                ocultarDropdownUsuario();
+            }
+        });
+    }
+</script>
+</body>
+</html>

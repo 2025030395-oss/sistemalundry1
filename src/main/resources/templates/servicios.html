@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Servicio - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col justify-between p-8" style="font-family: 'Inter', sans-serif;">
+
+<div class="w-full max-w-6xl mx-auto block shrink-0 mb-8">
+    <div class="flex items-center justify-between px-4 relative">
+        <img th:src="@{/logo2.png}" src="/logo2.png" alt="SU Logo" class="h-10 object-contain">
+
+        <div class="md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-[#0a369d] text-white flex items-center justify-center text-xs font-bold shadow-sm">1</div>
+                <span class="text-xs font-bold text-[#0a369d]">Servicio</span>
+            </div>
+            <div class="w-12 h-0.5 bg-gray-200"></div>
+
+            <div class="flex items-center space-x-2 opacity-40">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">2</div>
+                <span class="text-xs font-semibold text-gray-400">Detalles</span>
+            </div>
+            <div class="w-12 h-0.5 bg-gray-200"></div>
+
+            <div class="flex items-center space-x-2 opacity-40">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">3</div>
+                <span class="text-xs font-semibold text-gray-400">Cliente</span>
+            </div>
+            <div class="w-12 h-0.5 bg-gray-200"></div>
+
+            <div class="flex items-center space-x-2 opacity-40">
+                <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">4</div>
+                <span class="text-xs font-semibold text-gray-400">Ticket</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-6xl mx-auto w-full flex-1 flex flex-col justify-center my-auto">
+    <div class="text-center">
+        <h1 class="text-4xl font-black text-gray-900 tracking-tight">¿Qué servicio necesitas?</h1>
+        <p class="text-gray-500 text-sm mt-2 font-medium">Selecciona el tipo de lavado que mejor se adapte a tu ropa</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+
+        <div data-color="blue" data-nombre="Lavado Pesado / Industrial" data-precio="390.00" data-detalles="Atención especial ropa pesada y edredones" th:data-url="@{/servicio-industrial}" class="tarjeta-servicio bg-white rounded-3xl border-2 border-blue-600 shadow-xs flex flex-col justify-between overflow-hidden group hover:shadow-md transition cursor-pointer">
+            <div class="zona-superior p-6 flex flex-col items-center text-center transition duration-150">
+                <div class="h-36 flex items-center justify-center">
+                    <img th:src="@{/lav1.png}" src="/lav1.png" class="w-50 h-50 object-contain" alt="Lavado Pesado">
+                </div>
+                <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center -mt-2 shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">local_laundry_service</span>
+                </div>
+                <h3 class="text-blue-600 font-bold text-base mt-4 leading-tight">Lavado<br>Pesado / Industrial</h3>
+                <p class="text-gray-400 text-[11px] leading-relaxed mt-3 font-medium px-2">Ideal para ropa de cama, uniformes de trabajo, mantelería y prendas muy sucias.</p>
+            </div>
+            <div class="bg-blue-600 p-4 flex justify-center">
+                <button type="button" class="w-9 h-9 bg-white text-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition cursor-pointer">
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+
+        <div data-color="green" data-nombre="Lavado Convencional" data-precio="120.00" data-detalles="Ropa casual, por kilo" th:data-url="@{/servicio-convencional}" class="tarjeta-servicio bg-white rounded-3xl border-2 border-green-600 shadow-xs flex flex-col justify-between overflow-hidden group hover:shadow-md transition cursor-pointer">
+            <div class="zona-superior p-6 flex flex-col items-center text-center transition duration-150">
+                <div class="h-36 flex items-center justify-center">
+                    <img th:src="@{/lav2.png}" src="/lav2.png" class="w-50 h-50 object-contain" alt="Lavado Convencional">
+                </div>
+                <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center -mt-2 shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">laundry</span>
+                </div>
+                <h3 class="text-green-600 font-bold text-base mt-4 leading-tight">Lavado<br>Convencional <span class="text-xs text-gray-400 font-normal block">(Por kilo)</span></h3>
+                <p class="text-gray-400 text-[11px] leading-relaxed mt-3 font-medium px-2">Perfecto para tu ropa del día a día, deportiva, jeans, ropa infantil y más.</p>
+            </div>
+            <div class="bg-green-600 p-4 flex justify-center">
+                <button type="button" class="w-9 h-9 bg-white text-green-600 rounded-full flex items-center justify-center group-hover:scale-110 transition cursor-pointer">
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+
+        <div data-color="purple" data-nombre="Lavado Delicado / Wet Cleaning" data-precio="250.00" data-detalles="Cuidado para prendas frágiles" th:data-url="@{/servicio-delicado}" class="tarjeta-servicio bg-white rounded-3xl border-2 border-purple-600 shadow-xs flex flex-col justify-between overflow-hidden group hover:shadow-md transition cursor-pointer">
+            <div class="zona-superior p-6 flex flex-col items-center text-center transition duration-150">
+                <div class="h-36 flex items-center justify-center">
+                    <img th:src="@{/lav3.png}" src="/lav3.png" class="w-55 h-55 object-contain" alt="Lavado Delicado">
+                </div>
+                <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center -mt-2 shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">waves</span>
+                </div>
+                <h3 class="text-purple-600 font-bold text-base mt-4 leading-tight">Lavado Delicado /<br>Wet Cleaning</h3>
+                <p class="text-gray-400 text-[11px] leading-relaxed mt-3 font-medium px-2">Especial para prendas delicadas, fibras naturales, ropa de bebé y tejidos sensibles.</p>
+            </div>
+            <div class="bg-purple-600 p-4 flex justify-center">
+                <button type="button" class="w-9 h-9 bg-white text-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition cursor-pointer">
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+
+        <div data-color="amber" data-nombre="Limpieza en Seco (Tintorería)" data-precio="300.00" data-detalles="Proceso de tintorería profesional" th:data-url="@{/servicio-tintoreria}" class="tarjeta-servicio bg-white rounded-3xl border-2 border-amber-600 shadow-xs flex flex-col justify-between overflow-hidden group hover:shadow-md transition cursor-pointer">
+            <div class="zona-superior p-6 flex flex-col items-center text-center transition duration-150">
+                <div class="h-36 flex items-center justify-center">
+                    <img th:src="@{/tint4.png}" src="/tint4.png" class="w-50 h-50 object-contain" alt="Limpieza en Seco">
+                </div>
+                <div class="w-10 h-10 bg-amber-500 text-white rounded-full flex items-center justify-center -mt-2 shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">dry_cleaning</span>
+                </div>
+                <h3 class="text-amber-600 font-bold text-base mt-4 leading-tight">Limpieza en Seco<br><span class="text-xs text-gray-400 font-normal">(Tintorería)</span></h3>
+                <p class="text-gray-400 text-[11px] leading-relaxed mt-3 font-medium px-2">Para prendas delicadas, trajes, abrigos, cuero, cortinas y artículos que no deben mojarse.</p>
+            </div>
+            <div class="bg-amber-500 p-4 flex justify-center">
+                <button type="button" class="w-9 h-9 bg-white text-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 transition cursor-pointer">
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="w-full flex justify-center pb-4 shrink-0 mt-8">
+    <a th:href="@{/pedidos}" href="/pedidos" class="inline-flex items-center space-x-2 border border-gray-300 bg-white text-gray-600 px-6 py-2.5 rounded-xl text-xs font-semibold hover:bg-gray-50 transition shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+        <span>Volver</span>
+    </a>
+</div>
+
+<script>
+    const tarjetas = document.querySelectorAll('.tarjeta-servicio');
+
+    const clasesSombreo = {
+        blue: 'bg-blue-600/15',
+        green: 'bg-green-600/15',
+        purple: 'bg-purple-600/15',
+        amber: 'bg-amber-600/15'
+    };
+
+    tarjetas.forEach(tarjeta => {
+        const zonaSuperior = tarjeta.querySelector('.zona-superior');
+        const colorTipo = tarjeta.getAttribute('data-color');
+
+        tarjeta.addEventListener('click', () => {
+            const urlDestino = tarjeta.getAttribute('data-url') || tarjeta.getAttribute('href');
+
+            // Guardar detalles del servicio seleccionado
+            localStorage.setItem('servicioSeleccionado', tarjeta.getAttribute('data-nombre'));
+            localStorage.setItem('precioServicio', tarjeta.getAttribute('data-precio'));
+            localStorage.setItem('detallesPrendas', tarjeta.getAttribute('data-detalles'));
+
+            tarjetas.forEach(t => {
+                const zSup = t.querySelector('.zona-superior');
+                const cTipo = t.getAttribute('data-color');
+                zSup.classList.remove(clasesSombreo[cTipo]);
+            });
+            zonaSuperior.classList.add(clasesSombreo[colorTipo]);
+
+            setTimeout(() => {
+                if (urlDestino) {
+                    window.location.href = urlDestino;
+                }
+            }, 250);
+        });
+    });
+</script>
+
+</body>
+</html>

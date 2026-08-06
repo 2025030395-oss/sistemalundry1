@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen text-gray-800 overflow-hidden relative" style="font-family: 'Inter', sans-serif;">
+
+<!-- Sidebar -->
+<div class="w-64 bg-[#0a369d] text-white flex flex-col justify-between shadow-lg shrink-0">
+    <div>
+        <div class="h-16 bg-[#041231] flex items-center justify-center">
+            <img th:src="@{/sulaundry.jpeg}" src="/sulaundry.jpeg" alt="SU Laundry Logo" class="h-full w-full object-cover">
+        </div>
+
+        <nav class="mt-6 px-4 space-y-2">
+            <a th:href="@{/index}" href="/index" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Inicio</span>
+            </a>
+            <a th:href="@{/pedidos}" href="/pedidos" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a th:href="@{/clientes}" href="/clientes" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/inventario}" href="/inventario" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Inventario</span>
+            </a>
+            <a th:href="@{/caja}" href="/caja" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                <span>Caja</span>
+            </a>
+            <a th:href="@{/reportes}" href="/reportes" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Reportes</span>
+            </a>
+            <a th:href="@{/perfil}" href="/perfil" class="flex items-center space-x-3 bg-[#cbdcf7] text-[#0a369d] py-3 px-4 rounded-xl font-semibold shadow-xs">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-white/10 text-xs text-white/60" th:text="'Sesión: ' + ${usuario.nombre}">
+        Sesión: Paulina Martínez
+    </div>
+</div>
+
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Mi Perfil</h1>
+            <p class="text-xs text-gray-500">Gestiona tus datos personales y credenciales de acceso</p>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="relative">
+                <input type="text" placeholder="Buscar orden, cliente, prenda..."
+                       onfocus="this.placeholder = ''"
+                       onblur="this.placeholder = 'Buscar orden, cliente, prenda...'"
+                       class="w-64 bg-gray-100 text-sm py-2 pl-4 pr-10 rounded-lg border border-transparent focus:outline-hidden focus:bg-white focus:border-gray-300 transition">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute right-3 top-2.5"></i>
+            </div>
+            <button class="relative p-1 text-gray-400 hover:text-gray-600">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            <div class="flex items-center space-x-3 border-l border-gray-200 pl-6 text-left">
+                <div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold shrink-0">
+                    PM
+                </div>
+                <div class="leading-tight">
+                    <p class="text-sm font-semibold text-gray-700" th:text="${usuario.nombre}">Paulina Martínez</p>
+                    <p class="text-xs text-gray-400" th:text="${usuario.rol}">Administradora</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-8 flex flex-1 space-x-6 overflow-hidden items-start">
+
+        <!-- Columna Izquierda: Tarjeta de Presentación y Métricas -->
+        <div class="w-80 flex flex-col space-y-6 shrink-0">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-xs p-6 text-center">
+                <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-black text-3xl mx-auto mb-4 relative shadow-inner shadow-purple-200/50">
+                    PM
+                    <button class="absolute bottom-0 right-0 w-8 h-8 bg-[#0a369d] text-white rounded-full flex items-center justify-center border-4 border-white shadow-xs hover:bg-[#082c7f] transition cursor-pointer">
+                        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <h3 class="text-base font-bold text-gray-900 leading-tight" th:text="${usuario.nombre}">Paulina Martínez</h3>
+                <span class="inline-block bg-purple-50 text-purple-700 px-3 py-0.5 rounded-full text-[11px] font-bold mt-2 border border-purple-100/50"
+                      th:text="${usuario.rol}">
+                    Administradora
+                </span>
+
+                <p class="text-xs text-gray-400 mt-4 font-medium flex items-center justify-center gap-1">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Miembro desde <span th:text="${usuario.miembroDesde}">Mayo, 2026</span>
+                </p>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-xs space-y-4">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Actividad del mes</h4>
+
+                <div class="flex items-center space-x-3.5 border-b border-gray-50 pb-3">
+                    <div class="w-9 h-9 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <!-- CORREGIDO: Sintaxis Thymeleaf -->
+                        <p class="text-xs font-bold text-gray-900" th:text="${usuario.pedidosRegistrados} + ' Pedidos'">0 Pedidos</p>
+                        <p class="text-[10px] text-gray-400 font-medium">Registrados en caja</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-9 h-9 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center shrink-0">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <!-- CORREGIDO: Sintaxis Thymeleaf -->
+                        <p class="text-xs font-bold text-gray-900" th:text="${usuario.turnosCerrados} + ' Turnos'">0 Turnos</p>
+                        <p class="text-[10px] text-gray-400 font-medium">Cerrados de manera exitosa</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Formularios de Edición -->
+        <div class="flex-1 bg-white rounded-2xl border border-gray-100 shadow-xs p-6 h-full overflow-y-auto space-y-8">
+
+            <!-- Formulario 1: Información Personal -->
+            <div>
+                <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-3 mb-5">
+                    <i data-lucide="user-check" class="w-4 h-4 text-gray-500"></i>
+                    Información Personal
+                </h3>
+
+                <form th:action="@{/perfil/actualizar-datos}" method="POST" class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nombre Completo</label>
+                        <input type="text" name="nombre" th:value="${usuario.nombre}" required
+                               class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Correo Electrónico</label>
+                        <input type="email" name="correo" th:value="${usuario.correo}" required
+                               class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Teléfono de Contacto</label>
+                        <input type="text" name="telefono" th:value="${usuario.telefono}"
+                               class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Sucursal Asignada</label>
+                        <input type="text" th:value="${usuario.sucursal}" readonly class="w-full bg-gray-100 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-400 font-semibold focus:outline-hidden cursor-not-allowed">
+                    </div>
+
+                    <div class="col-span-2 flex justify-end pt-2">
+                        <button type="submit" class="bg-[#0a369d] hover:bg-[#082c7f] text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-xs transition duration-150 active:scale-98 cursor-pointer">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Formulario 2: Seguridad de la Cuenta -->
+            <div>
+                <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-3 mb-5">
+                    <i data-lucide="lock" class="w-4 h-4 text-gray-500"></i>
+                    Seguridad de la Cuenta
+                </h3>
+
+                <form th:action="@{/perfil/actualizar-password}" method="POST" class="space-y-4">
+
+                    <p th:if="${errorPassword}" class="text-xs font-semibold text-red-600 bg-red-50 p-3 rounded-xl border border-red-100 mb-4 flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 shrink-0"></i>
+                        <span th:text="${errorPassword}">Error aquí</span>
+                    </p>
+
+                    <div class="max-w-sm">
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Contraseña Actual</label>
+                        <input type="password" name="passwordActual" required placeholder="••••••••••••" class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nueva Contraseña</label>
+                            <input type="password" name="nuevaPassword" required placeholder="Mínimo 8 caracteres" class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Confirmar Nueva Contraseña</label>
+                            <input type="password" name="confirmarPassword" required placeholder="Repite la contraseña" class="w-full bg-gray-50 text-xs py-2.5 px-3 rounded-xl border border-gray-200 text-gray-800 focus:outline-hidden focus:bg-white focus:border-[#0a369d] transition">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-xs transition duration-150 active:scale-98 cursor-pointer">
+                            Actualizar contraseña
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<!-- Modales de Confirmación -->
+<div id="modal-perfil-exito" th:if="${perfilActualizado}" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-gray-100 mx-4 text-center">
+        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="user-check" class="w-10 h-10"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900">¡Perfil Actualizado!</h3>
+        <p class="text-xs text-gray-500 mt-1 mb-5">Tus datos personales se han guardado correctamente.</p>
+        <button onclick="cerrarModalPerfil()" class="w-full bg-[#0a369d] text-white py-3 px-4 rounded-xl font-bold text-xs cursor-pointer hover:bg-[#082c7f] transition">
+            Aceptar
+        </button>
+    </div>
+</div>
+
+<div id="modal-password-exito" th:if="${passwordActualizada}" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-gray-100 mx-4 text-center">
+        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="shield-check" class="w-10 h-10"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900">¡Seguridad Actualizada!</h3>
+        <p class="text-xs text-gray-500 mt-1 mb-5">Tu contraseña ha sido cambiada de forma segura.</p>
+        <button onclick="cerrarModalPassword()" class="w-full bg-[#0a369d] text-white py-3 px-4 rounded-xl font-bold text-xs cursor-pointer hover:bg-[#082c7f] transition">
+            Aceptar
+        </button>
+    </div>
+</div>
+
+<script>
+    function cerrarModalPerfil() {
+        const modal = document.getElementById('modal-perfil-exito');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function cerrarModalPassword() {
+        const modal = document.getElementById('modal-password-exito');
+        if (modal) modal.style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        setTimeout(() => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, 100);
+    });
+</script>
+</body>
+</html>

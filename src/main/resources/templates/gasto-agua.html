@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gasto de Agua - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen text-gray-800 overflow-hidden" style="font-family: 'Inter', sans-serif;">
+
+<!-- Sidebar -->
+<div class="w-64 bg-[#0a369d] text-white flex flex-col justify-between shadow-lg shrink-0">
+    <div>
+        <div class="h-16 bg-[#041231] flex items-center justify-center">
+            <img th:src="@{/sulaundry.jpeg}" src="/sulaundry.jpeg" alt="SU Laundry Logo" class="h-full w-full object-cover">
+        </div>
+
+        <nav class="mt-6 px-4 space-y-2">
+            <a th:href="@{/index}" href="/index" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Inicio</span>
+            </a>
+            <a th:href="@{/pedidos}" href="/pedidos" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a th:href="@{/clientes}" href="/clientes" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/inventario}" href="/inventario" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Inventario</span>
+            </a>
+            <a th:href="@{/caja}" href="/caja" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="wallet" class="w-5 h-5"></i>
+                <span>Caja</span>
+            </a>
+            <a th:href="@{/reportes}" href="/reportes" class="flex items-center space-x-3 bg-[#cbdcf7] text-[#0a369d] py-3 px-4 rounded-xl font-semibold shadow-xs">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Reportes</span>
+            </a>
+            <a th:href="@{/perfil}" href="/perfil" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-white/10 text-[10px] text-white/60">
+        © SU laundry - Sistema de gestión
+    </div>
+</div>
+
+<!-- Contenido Principal -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Gasto de Agua</h1>
+            <p class="text-xs text-gray-400 font-medium">Monitorea y controla el consumo de agua de tu lavandería</p>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div id="contenedorCalendario" class="relative flex items-center bg-white border border-gray-200 rounded-xl px-4 py-2 shadow-2xs hover:border-[#0a369d]/40 transition group cursor-pointer select-none">
+                <input type="date" value="2026-05-12" id="calendarioHeader" class="absolute opacity-0 pointer-events-none w-0 h-0">
+                <span id="txtFechaHeader" class="text-xs font-semibold text-gray-500 mr-8 pointer-events-none">
+                    12/05/2026
+                </span>
+                <i data-lucide="calendar" class="w-4 h-4 text-gray-400 absolute right-4 pointer-events-none group-hover:text-[#0a369d] transition"></i>
+            </div>
+
+            <div class="flex items-center space-x-3 border-l border-gray-200 pl-6">
+                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-sm shrink-0">
+                    PM
+                </div>
+                <div class="text-left leading-tight">
+                    <p class="text-sm font-bold text-gray-700">Paulina Martínez</p>
+                    <p class="text-xs text-gray-400 font-medium">Administradora</p>
+                </div>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-8 flex-1 overflow-y-auto space-y-6">
+
+        <!-- TARJETAS DE INDICADORES (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-2xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                    <i data-lucide="droplet" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Gasto de agua total</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${gastoTotal != null ? #numbers.formatInteger(gastoTotal, 1, 'POINT') + ' L' : '0 L'}">12,450 L</p>
+                    <p class="text-[9px] text-gray-400 font-medium mt-0.5">Cálculo acumulado</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-2xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                    <i data-lucide="droplet" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Promedio diario</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${promedioDiario != null ? #numbers.formatInteger(promedioDiario, 1, 'POINT') + ' L' : '0 L'}">1,950 L</p>
+                    <p class="text-[9px] text-gray-400 font-medium mt-0.5">Estimado por día</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-2xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                    <i data-lucide="droplet" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Litros por kilo lavado</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${litrosPorKilo != null ? #numbers.formatDecimal(litrosPorKilo, 1, 1) + ' L' : '19.5 L'}">19.5 L</p>
+                    <p class="text-[9px] text-gray-400 font-medium mt-0.5">Factor de conversión</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-2xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                    <i data-lucide="droplet" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Costo estimado</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${costoTotal != null ? '$' + #numbers.formatDecimal(costoTotal, 1, 2) : '$0.00'}">$249.00</p>
+                    <p class="text-[9px] text-gray-400 font-medium mt-0.5">Basado en $0.02/L</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TABLA DINÁMICA CON THYMELEAF -->
+        <div class="bg-white border border-gray-100 rounded-2xl shadow-xs overflow-hidden flex flex-col justify-between p-6 min-h-[480px]">
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="border-b border-gray-200 text-gray-500 text-[11px] font-bold uppercase tracking-wider">
+                        <th class="pb-4 font-semibold">Fecha</th>
+                        <th class="pb-4 font-semibold">Origen</th>
+                        <th class="pb-4 font-semibold">Consumo (Litro)</th>
+                        <th class="pb-4 font-semibold">Kilos lavados</th>
+                        <th class="pb-4 font-semibold">Litros por kilo</th>
+                        <th class="pb-4 text-right font-semibold">Costo estimado</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-xs font-semibold text-gray-700 divide-y divide-gray-50">
+
+                    <!-- Fila Dinámica Thymeleaf -->
+                    <tr th:each="registro : ${registrosAgua}" class="hover:bg-gray-50/50 transition">
+                        <td class="py-4.5 text-gray-500" th:text="${#temporals.format(registro.fecha, 'dd/MM/yyyy')}">14/05/2026</td>
+                        <td class="py-4.5">
+                            <span th:if="${registro.origen == 'automatico_pedido'}" class="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-[10px] font-bold">Auto (Pedido)</span>
+                            <span th:unless="${registro.origen == 'automatico_pedido'}" class="bg-amber-50 text-amber-600 px-2 py-1 rounded-md text-[10px] font-bold">Manual</span>
+                        </td>
+                        <td class="py-4.5 text-gray-800 font-bold" th:text="${#numbers.formatDecimal(registro.litrosConsumidos, 1, 0) + ' L'}">1,950 L</td>
+                        <td class="py-4.5 text-gray-600" th:text="${#numbers.formatDecimal(registro.kilosLavados, 1, 1) + ' Kg'}">100 Kg</td>
+                        <td class="py-4.5 text-gray-600" th:text="${registro.kilosLavados > 0 ? #numbers.formatDecimal(registro.litrosConsumidos / registro.kilosLavados, 1, 1) + ' L' : '0 L'}">19.5 L</td>
+                        <td class="py-4.5 text-right text-gray-900 font-bold" th:text="${'$' + #numbers.formatDecimal(registro.costoEstimado, 1, 2)}">$39.00</td>
+                    </tr>
+
+                    <!-- Mensaje si la lista está vacía -->
+                    <tr th:if="${#lists.isEmpty(registrosAgua)}">
+                        <td colspan="6" class="py-8 text-center text-gray-400 font-medium">
+                            No hay registros de consumo de agua disponibles.
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación / Pie de tabla -->
+            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400 font-semibold">
+                <div th:text="${'Mostrando ' + (registrosAgua != null ? registrosAgua.size() : 0) + ' registros'}">
+                    Mostrando 0 registros
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 transition cursor-pointer">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button class="w-8 h-8 bg-[#0a369d] text-white rounded-lg flex items-center justify-center font-bold shadow-xs">
+                        1
+                    </button>
+                    <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 transition cursor-pointer">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    const contenedorCalendario = document.getElementById('contenedorCalendario');
+    const calendarioHeader = document.getElementById('calendarioHeader');
+    const txtFechaHeader = document.getElementById('txtFechaHeader');
+
+    contenedorCalendario.addEventListener('click', () => {
+        try {
+            calendarioHeader.showPicker();
+        } catch (error) {
+            calendarioHeader.click();
+        }
+    });
+
+    calendarioHeader.addEventListener('change', (e) => {
+        const fecha = e.target.value;
+        if (fecha) {
+            const [anio, mes, dia] = fecha.split('-');
+            txtFechaHeader.textContent = `${dia}/${mes}/${anio}`;
+        }
+    });
+</script>
+</body>
+</html>

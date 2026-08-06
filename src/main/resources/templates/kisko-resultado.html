@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SU Laundry - Estado</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        .kiosco-container { display: flex; height: 100vh; width: 100vw; background-color: #f4f6f9; }
+
+        .left-banner {
+            width: 40%;
+            height: 100vh;
+            display: block;
+        }
+        .left-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .right-content { width: 60%; padding: 60px; display: flex; flex-direction: column; justify-content: space-between; background-color: #fdfdfd; }
+        h2 { font-size: 28px; margin-bottom: 5px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        .alert-banner { background-color: #cce5ff; color: #004085; padding: 15px 20px; border-radius: 8px; margin-bottom: 40px; font-size: 14px; }
+        .timeline { display: flex; justify-content: space-between; position: relative; margin-bottom: 5px; padding: 0 10px; }
+        .timeline::before { content: ''; position: absolute; background-color: #e0e0e0; height: 4px; width: 94%; top: 15px; left: 3%; z-index: 1; }
+        .step { position: relative; z-index: 2; text-align: center; width: 25%; }
+        .circle { width: 34px; height: 34px; background-color: white; border: 4px solid #e0e0e0; border-radius: 50%; margin: 0 auto 15px auto; }
+        .step-text { font-size: 11px; font-weight: bold; color: #777; line-height: 1.3; }
+        .step.active .circle { border-color: #1771f1; background-color: #1771f1; }
+        .step.active .step-text { color: #111; }
+        .info-box { background: white; border: 1px solid #eef0f3; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); margin-top: 40px; }
+        .info-box h4 { margin-bottom: 10px; font-size: 16px; color: #333; }
+        .info-box p { font-size: 14px; color: #555; line-height: 2; }
+        .bottom-bar { text-align: right; }
+        .btn-salir { display: inline-block; padding: 12px 40px; background-color: white; color: #333; border: 1px solid #ccc; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="kiosco-container">
+    <div class="left-banner">
+        <img th:src="@{/log.jpeg}" alt="SU Laundry Banner">
+    </div>
+
+    <div class="right-content">
+        <div>
+            <h2>¡Bienvenido a SU laundry!</h2>
+            <p class="subtitle">Rastrea tu pedido</p>
+            <div class="alert-banner">ℹ️ Tienes 3 días hábiles para recoger tu pedido a partir de que tu pedido ya esté listo</div>
+
+            <div class="timeline">
+                <div class="step active">
+                    <div class="circle"></div>
+                    <div class="step-text">Tu pedido está en cola</div>
+                </div>
+                <div class="step" th:classappend="${pedido.estado == 'En proceso' || pedido.estado == 'Listo' ? 'active' : ''}">
+                    <div class="circle"></div>
+                    <div class="step-text">Tu pedido está en proceso de lavado</div>
+                </div>
+                <div class="step" th:classappend="${pedido.estado == 'Listo' ? 'active' : ''}">
+                    <div class="circle"></div>
+                    <div class="step-text">Tu pedido está listo</div>
+                </div>
+                <div class="step" th:classappend="${pedido.estado == 'Entregado' ? 'active' : ''}">
+                    <div class="circle"></div>
+                    <div class="step-text">Tu pedido ya ha sido entregado</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>Tu número de pedido es: <span th:text="${pedido.orden}"></span></h4>
+                <p><strong>Servicio contratado:</strong> <span th:text="${pedido.tipoServicio}"></span></p>
+                <p><strong>Total de piezas:</strong> <span th:text="${pedido.totalPiezas}"></span> prendas</p>
+                <p><strong>Monto total:</strong> $<span th:text="${pedido.total}"></span></p>
+            </div>
+        </div>
+        <div class="bottom-bar"><a href="/kiosco" class="btn-salir">Salir</a></div>
+    </div>
+</div>
+</body>
+</html>

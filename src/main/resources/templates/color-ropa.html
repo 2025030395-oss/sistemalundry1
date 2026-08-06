@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipo de Color de Ropa - SU Laundry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col justify-between p-8" style="font-family: 'Inter', sans-serif;">
+
+<div class="w-full max-w-6xl mx-auto relative flex items-center justify-between px-4 mb-6">
+  <div class="z-10">
+    <img src="/logo2.png" alt="SU Logo" class="h-10 object-contain">
+  </div>
+
+  <div class="md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center space-x-4">
+    <div class="flex items-center space-x-2">
+      <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">check</span>
+      </div>
+      <span class="text-xs font-bold text-green-600">Servicio</span>
+    </div>
+    <div class="w-12 h-0.5 bg-green-200"></div>
+
+    <div class="flex items-center space-x-2">
+      <div class="w-8 h-8 rounded-full bg-[#0a369d] text-white flex items-center justify-center text-xs font-bold shadow-sm">2</div>
+      <span class="text-xs font-bold text-[#0a369d]">Detalles</span>
+    </div>
+    <div class="w-12 h-0.5 bg-gray-200"></div>
+
+    <div class="flex items-center space-x-2 opacity-40">
+      <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">3</div>
+      <span class="text-xs font-semibold text-gray-400">Cliente</span>
+    </div>
+    <div class="w-12 h-0.5 bg-gray-200"></div>
+
+    <div class="flex items-center space-x-2 opacity-40">
+      <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">4</div>
+      <span class="text-xs font-semibold text-gray-400">Ticket</span>
+    </div>
+  </div>
+  <div class="hidden md:block w-10"></div>
+</div>
+
+<form id="form-color" action="/guardar-color" method="POST" class="max-w-4xl mx-auto w-full text-center my-auto px-4 flex flex-col justify-between flex-1">
+  <!-- Input oculto para persistir la selección -->
+  <input type="hidden" name="color_ropa" id="input-color-ropa" value="">
+
+  <div>
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">¿Qué tipo de color de ropa desea lavar?</h1>
+    <p class="text-gray-500 text-sm mt-2 font-medium">Selecciona una de las opciones.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 max-w-3xl mx-auto">
+      <div data-color="oscura" class="tarjeta-color bg-black h-80 rounded-3xl border-4 border-transparent shadow-sm hover:shadow-md transition duration-200 cursor-pointer flex flex-col items-center justify-center group relative overflow-hidden">
+        <span class="text-white font-bold text-lg z-10 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out pointer-events-none">Oscura / Negra</span>
+        <div class="capa-seleccion absolute inset-0 bg-white/0 transition duration-150"></div>
+      </div>
+
+      <div data-color="blanca" class="tarjeta-color bg-white h-80 rounded-3xl border-4 border-gray-200 shadow-sm hover:shadow-md transition duration-200 cursor-pointer flex flex-col items-center justify-center group relative overflow-hidden">
+        <span class="text-gray-800 font-bold text-lg z-10 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out pointer-events-none">Ropa Blanca</span>
+        <div class="capa-seleccion absolute inset-0 bg-black/0 transition duration-150"></div>
+      </div>
+
+      <div data-color="color" class="tarjeta-color bg-[#0066ff] h-80 rounded-3xl border-4 border-transparent shadow-sm hover:shadow-md transition duration-200 cursor-pointer flex flex-col items-center justify-center group relative overflow-hidden">
+        <span class="text-white font-bold text-lg z-10 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out pointer-events-none">Ropa de Color</span>
+        <div class="capa-seleccion absolute inset-0 bg-white/0 transition duration-150"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-5xl mx-auto flex items-center justify-between pt-6 border-t border-gray-200/60 mt-12">
+    <a href="/servicios" class="inline-flex items-center space-x-2 border border-gray-300 bg-white text-gray-600 px-6 py-2.5 rounded-xl text-xs font-semibold hover:bg-gray-50 transition shadow-xs">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+      <span>Volver</span>
+    </a>
+
+    <button type="submit" id="btn-continuar" disabled class="inline-flex items-center space-x-2 bg-gray-400 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-xs cursor-not-allowed opacity-60 transition">
+      <span>Continuar</span>
+      <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+    </button>
+  </div>
+</form>
+
+<script>
+  const tarjetasColor = document.querySelectorAll('.tarjeta-color');
+  const inputColorRopa = document.getElementById('input-color-ropa');
+  const btnContinuar = document.getElementById('btn-continuar');
+
+  tarjetasColor.forEach(tarjeta => {
+    tarjeta.addEventListener('click', () => {
+      tarjetasColor.forEach(t => {
+        t.classList.remove('border-blue-500', 'border-gray-400', 'border-white');
+        const texto = t.querySelector('span');
+        texto.classList.add('opacity-0');
+        texto.classList.remove('opacity-100', '!opacity-100');
+
+        const capa = t.querySelector('.capa-seleccion');
+        if(t.getAttribute('data-color') === 'blanca') {
+          capa.className = "capa-seleccion absolute inset-0 bg-black/0";
+        } else {
+          capa.className = "capa-seleccion absolute inset-0 bg-white/0";
+        }
+      });
+
+      const tipoColor = tarjeta.getAttribute('data-color');
+      const capaActual = tarjeta.querySelector('.capa-seleccion');
+      const textoActual = tarjeta.querySelector('span');
+
+      // Guardar el valor seleccionado en el input oculto
+      inputColorRopa.value = tipoColor;
+
+      // Habilitar botón continuar cambiando estilos grasientos
+      btnContinuar.disabled = false;
+      btnContinuar.className = "inline-flex items-center space-x-2 bg-[#0066ff] text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-[#0052cc] transition shadow-xs cursor-pointer";
+
+      textoActual.classList.remove('opacity-0');
+      textoActual.classList.add('!opacity-100');
+
+      if (tipoColor === 'blanca') {
+        tarjeta.classList.add('border-blue-500');
+        capaActual.className = "capa-seleccion absolute inset-0 bg-blue-500/10";
+      } else if (tipoColor === 'oscura') {
+        tarjeta.classList.add('border-blue-500');
+        capaActual.className = "capa-seleccion absolute inset-0 bg-white/10";
+      } else if (tipoColor === 'color') {
+        tarjeta.classList.add('border-white');
+        capaActual.className = "capa-seleccion absolute inset-0 bg-black/15";
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

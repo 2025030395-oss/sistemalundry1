@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SU Laundry - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen w-screen overflow-hidden select-none" style="font-family: 'Inter', sans-serif;">
+
+<div class="w-[40%] bg-gradient-to-b from-[#0a4cc4] via-[#093fa3] to-[#041d52] relative flex flex-col items-center justify-center p-8 shrink-0 shadow-xl z-10">
+    <div class="w-full flex items-center justify-center">
+        <img src="log.jpeg" alt="SU Laundry Logo" class="w-full h-full object-cover fallback-image">
+    </div>
+
+
+
+    <div class="absolute bottom-8 right-8 text-white/30 animate-pulse">
+        <i data-lucide="sparkles" class="w-6 h-6"></i>
+    </div>
+</div>
+
+<div class="flex-1 bg-[#f4f6fa] flex items-center justify-center p-6 md:p-12">
+
+    <div class="bg-white rounded-2xl border border-gray-100 p-10 w-full max-w-md shadow-[0_10px_30px_rgba(0,0,0,0.04)] transform transition-all duration-300">
+
+        <div id="section-login" class="block">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-950 tracking-tight">Iniciar sesión</h2>
+                <p class="text-xs text-gray-400 mt-1 font-medium">Ingresa tus datos para continuar</p>
+            </div>
+
+            <form id="form-login-admin" action="/login" method="POST" class="space-y-5">
+
+                <div th:if="${param.error}" class="flex items-center space-x-2 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold p-3 rounded-xl animate-fade-in">
+                    <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                    <span>Usuario o contraseña incorrectos.</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 mb-1.5">Usuario</label>
+                    <div class="relative">
+                            <span class="absolute left-3.5 top-3 text-gray-400 pointer-events-none">
+                                <i data-lucide="user" class="w-4 h-4 stroke-[2]"></i>
+                            </span>
+                        <input type="text" name="username" placeholder="Ingresa tu ID" required
+                               class="w-full bg-white text-xs p-3 pl-10 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:border-blue-500 transition h-11">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 mb-1.5">Contraseña</label>
+                    <div class="relative">
+                            <span class="absolute left-3.5 top-3 text-gray-400 pointer-events-none">
+                                <i data-lucide="lock" class="w-4 h-4 stroke-[2]"></i>
+                            </span>
+                        <input type="password" name="password" placeholder="Ingresa tu contraseña" required
+                               class="w-full bg-white text-xs p-3 pl-10 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:border-blue-500 transition h-11">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1 text-xs">
+                    <label class="flex items-center space-x-2 text-gray-400 font-medium cursor-pointer select-none">
+                        <input type="checkbox" class="w-4 h-4 text-[#0052ff] border-gray-200 rounded focus:ring-0 cursor-pointer accent-[#0052ff]">
+                        <span>Recordarme</span>
+                    </label>
+                    <button type="button" id="link-forgot" class="text-[#0052ff] font-semibold hover:underline bg-transparent border-none cursor-pointer">
+                        ¿Olvidaste tu contraseña?
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full bg-[#0052ff] hover:bg-[#0044d6] text-xs text-white font-bold py-3.5 rounded-xl transition duration-150 active:scale-98 shadow-xs cursor-pointer text-center tracking-wide mt-4">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+
+        <div id="section-recovery" class="hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-950 tracking-tight">¿Perdiste tu contraseña?</h2>
+                <p class="text-xs text-gray-400 mt-2 font-medium leading-relaxed">
+                    Ingresa tu ID o correo electrónico aquí y te enviaremos instrucciones sobre cómo restablecerla.
+                </p>
+            </div>
+
+            <form id="form-recovery-admin" onsubmit="event.preventDefault(); cambiarFormulario('login');" class="space-y-6">
+                <div class="relative">
+                        <span class="absolute left-3.5 top-3 text-gray-400 pointer-events-none">
+                            <i data-lucide="user" class="w-4 h-4 stroke-[2]"></i>
+                        </span>
+                    <input type="text" placeholder="ID o correo electrónico" required
+                           class="w-full bg-white text-xs p-3 pl-10 rounded-xl border border-gray-200 text-gray-800 font-medium focus:outline-hidden focus:border-blue-500 transition h-11">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button type="submit" class="bg-[#0052ff] hover:bg-[#0044d6] text-xs text-white font-bold py-3.5 rounded-xl transition cursor-pointer text-center shadow-xs">
+                        Enviar instrucciones
+                    </button>
+                    <button type="button" id="btn-cancel-recovery" class="bg-white hover:bg-gray-50 text-xs text-gray-700 font-bold py-3.5 rounded-xl border border-gray-200 transition cursor-pointer text-center shadow-xs">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    const loginSection = document.getElementById('section-login');
+    const recoverySection = document.getElementById('section-recovery');
+    const linkForgot = document.getElementById('link-forgot');
+    const btnCancelRecovery = document.getElementById('btn-cancel-recovery');
+
+    function cambiarFormulario(pantalla) {
+        if (pantalla === 'recovery') {
+            loginSection.classList.add('hidden');
+            recoverySection.classList.remove('hidden');
+        } else {
+            recoverySection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+        }
+    }
+
+    linkForgot.addEventListener('click', () => cambiarFormulario('recovery'));
+    btnCancelRecovery.addEventListener('click', () => cambiarFormulario('login'));
+</script>
+</body>
+</html>

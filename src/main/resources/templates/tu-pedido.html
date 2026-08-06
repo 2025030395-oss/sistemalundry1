@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen de tu Pedido - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col justify-between p-8 relative" style="font-family: 'Inter', sans-serif;">
+
+<!-- Stepper / Barra de pasos -->
+<div class="w-full max-w-6xl mx-auto relative flex items-center justify-between px-4 mb-6">
+    <div class="z-10">
+        <img th:src="@{/logo2.png}" src="/logo2.png" alt="SU Logo" class="h-10 object-contain">
+    </div>
+
+    <div class="md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">check</span>
+            </div>
+            <span class="text-xs font-bold text-green-600">Servicio</span>
+        </div>
+        <div class="w-12 h-0.5 bg-green-200"></div>
+
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">check</span>
+            </div>
+            <span class="text-xs font-bold text-green-600">Detalles</span>
+        </div>
+        <div class="w-12 h-0.5 bg-green-200"></div>
+
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">check</span>
+            </div>
+            <span class="text-xs font-bold text-green-600">Cliente</span>
+        </div>
+        <div class="w-12 h-0.5 bg-green-200"></div>
+
+        <div class="flex items-center space-x-2">
+            <div id="circulo-paso4" class="w-8 h-8 rounded-full bg-[#0a369d] text-white flex items-center justify-center text-xs font-bold shadow-sm transition-colors duration-300">
+                <span id="contenido-paso4">4</span>
+            </div>
+            <span id="texto-paso4" class="text-xs font-bold text-[#0a369d] transition-colors duration-300">Ticket</span>
+        </div>
+    </div>
+    <div class="hidden md:block w-10"></div>
+</div>
+
+<!-- Contenido Principal -->
+<div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8 my-auto px-4 items-start">
+
+    <!-- Tarjeta Izquierda -->
+    <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-200 p-8 shadow-xs">
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+                <span class="material-symbols-outlined text-[32px]">shopping_bag</span>
+            </div>
+            <div class="text-left">
+                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Tu pedido</h1>
+                <p class="text-gray-500 text-sm font-medium">Revisa que tu pedido esté correcto</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div class="border-2 border-blue-500 bg-blue-50/30 rounded-2xl p-5 flex flex-col items-center justify-between relative">
+                <span class="material-symbols-outlined text-blue-600 absolute top-3 right-3 text-[20px]">check_circle</span>
+                <img th:src="@{/prenda1.png}" src="/prenda1.png" class="h-28 object-contain mb-3" alt="Lavado Industrial">
+                <div class="text-center">
+                    <p class="text-sm font-extrabold text-blue-600" id="tarjeta-nombre-servicio">Lavado Pesado / Industrial</p>
+                    <p class="text-[11px] text-gray-400 font-medium mt-1 px-4 leading-tight">Ideal para ropa de cama, uniformes de trabajo y mantelería.</p>
+                </div>
+            </div>
+
+            <div class="border border-gray-200 bg-white rounded-2xl p-5 flex flex-col items-center justify-between opacity-60">
+                <img th:src="@{/prenda6.png}" src="/prenda6.png" class="h-28 object-contain mb-3" alt="Tintorería">
+                <div class="text-center">
+                    <p class="text-sm font-bold text-gray-700">Limpieza en Seco</p>
+                    <p class="text-[11px] text-gray-400 font-medium mt-1 px-4 leading-tight">Para prendas delicadas, trajes y sacos que no deben mojarse.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Derecha (Resumen Económico) -->
+    <div class="bg-white rounded-3xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between">
+
+        <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div class="flex items-center space-x-2">
+                <span class="material-symbols-outlined text-blue-600">local_laundry_service</span>
+                <span class="text-md font-extrabold text-gray-800">Mi pedido</span>
+            </div>
+            <button type="button" onclick="localStorage.clear(); location.reload();" class="text-xs font-bold text-blue-600 hover:underline cursor-pointer flex items-center space-x-1">
+                <span class="material-symbols-outlined text-[14px]">delete</span>
+                <span>Vaciar todo</span>
+            </button>
+        </div>
+
+        <div class="space-y-4 py-4 border-b border-gray-100 text-left" id="contenedor-servicios-reales">
+            <!-- Se genera mediante Javascript -->
+        </div>
+
+        <div class="space-y-2.5 py-4 text-left">
+            <div class="flex justify-between text-xs font-medium text-gray-400">
+                <span>Subtotal</span>
+                <span class="font-bold text-gray-700" id="resumen-subtotal">$0.00</span>
+            </div>
+            <div class="flex justify-between text-xs font-medium text-gray-400">
+                <span>IVA (16%)</span>
+                <span class="font-bold text-gray-700" id="resumen-iva">$0.00</span>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-dashed border-gray-200 mt-2">
+                <span class="text-sm font-black text-gray-800">Total estimado:</span>
+                <span class="text-xl font-black text-blue-600" id="resumen-total">$0.00</span>
+            </div>
+        </div>
+
+        <a th:href="@{/servicios}" href="/servicios" class="w-full border-2 border-dashed border-blue-200 text-blue-600 bg-blue-50/10 hover:bg-blue-50/40 rounded-xl py-2.5 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer mb-2 no-underline">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span>Agregar otro servicio</span>
+        </a>
+
+    </div>
+</div>
+
+<!-- Botones inferiores de navegación -->
+<div class="w-full max-w-6xl mx-auto flex items-center justify-between pt-6 border-t border-gray-200/60">
+    <a th:href="@{/datos-contacto}" href="/datos-contacto" class="inline-flex items-center space-x-2 border border-gray-300 bg-white text-gray-600 px-6 py-2.5 rounded-xl text-xs font-semibold hover:bg-gray-50 transition shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+        <span>Volver</span>
+    </a>
+
+    <button type="button" onclick="abrirModalExito()" class="inline-flex items-center space-x-2 bg-[#0066ff] text-white px-8 py-3 rounded-xl text-xs font-bold hover:bg-[#0052cc] transition shadow-xs cursor-pointer">
+        <span>Finalizar pedido</span>
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </button>
+</div>
+
+<!-- Modal de Confirmación y envío POST a Spring Boot -->
+<div id="modal-exito" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-xs"></div>
+
+    <form th:action="@{/pedidos/guardar}" method="POST" id="form-finalizar-pedido" class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative z-10 flex flex-col items-center space-y-5 transform scale-95 transition duration-300">
+
+        <!-- INPUTS OCULTOS CON SINCRO EXACTA A PARÁMETROS DEL CONTROLLER -->
+        <input type="hidden" name="nombreCliente" id="input-hidden-nombre">
+        <input type="hidden" name="idCliente" id="input-hidden-id-cliente">
+        <input type="hidden" name="telefonoCliente" id="input-hidden-telefono">
+        <input type="hidden" name="tipoServicio" id="input-hidden-servicio">
+        <input type="hidden" name="totalPiezas" id="input-hidden-piezas" value="1">
+        <input type="hidden" name="total" id="input-hidden-total" value="0.00">
+        <input type="hidden" name="descripcionDetalle" id="input-hidden-descripcion">
+
+        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center shadow-md shadow-green-500/20">
+            <span class="material-symbols-outlined text-white text-[45px] font-bold">check</span>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-black text-gray-900 tracking-tight">¡Listo!</h2>
+            <p class="text-sm font-bold text-gray-700 mt-1">Tu pedido ha sido guardado</p>
+        </div>
+
+        <div class="w-full bg-[#f0f5ff] rounded-2xl p-4 flex items-center justify-between border border-blue-100/50">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-700 shadow-2xs">
+                    <span class="material-symbols-outlined text-[22px]">account_circle</span>
+                </div>
+                <div class="text-left">
+                    <p id="ticket-nombre" class="text-xs font-bold text-gray-800">Cargando...</p>
+                    <p id="ticket-id" class="text-[10px] font-medium text-gray-400">ID: Cargando...</p>
+                </div>
+            </div>
+            <div>
+                <p class="text-md font-black text-gray-900" id="ticket-total-pantalla">$0.00</p>
+            </div>
+        </div>
+
+        <button type="button" onclick="confirmarYGuardarDefinitivo()" class="w-full bg-[#0066ff] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#0052cc] transition shadow-xs cursor-pointer">
+            Aceptar y Guardar
+        </button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        sincronizarDatosFormulario();
+    });
+
+    function sincronizarDatosFormulario() {
+        // Datos de usuario desde localStorage
+        const nombreGuardado = localStorage.getItem('nombreCliente') || "Cliente General";
+        const idClienteGuardado = localStorage.getItem('idCliente') || "";
+        const telefonoGuardado = localStorage.getItem('telefonoCliente') || "0000000000";
+
+        // Datos del servicio desde localStorage
+        const servicioSeleccionado = localStorage.getItem('servicioSeleccionado') || "Lavado Pesado / Industrial";
+        const detallesPrendas = localStorage.getItem('detallesPrendas') || "Servicio de lavandería general";
+
+        // RECUPERAR CANTIDAD DE PIEZAS (evaluando las distintas llaves posibles)
+        const piezasGuardadas = localStorage.getItem('totalPiezasSeleccionadas') || localStorage.getItem('totalPiezas');
+        const cantidadPiezas = (piezasGuardadas && !isNaN(parseInt(piezasGuardadas)) && parseInt(piezasGuardadas) > 0)
+            ? parseInt(piezasGuardadas)
+            : 1;
+
+        // Recuperar o calcular el subtotal
+        const precioBaseGuardado = parseFloat(localStorage.getItem('precioServicio'));
+        const subtotal = !isNaN(precioBaseGuardado) ? precioBaseGuardado : 390.00;
+
+        const iva = subtotal * 0.16;
+        const totalFinal = subtotal + iva;
+
+        // Rellenar visualmente el HTML
+        const txtServicio = document.getElementById('tarjeta-nombre-servicio');
+        if(txtServicio) txtServicio.innerText = servicioSeleccionado;
+
+        document.getElementById('ticket-nombre').innerText = nombreGuardado;
+        document.getElementById('ticket-id').innerText = "ID: " + (idClienteGuardado !== "" ? idClienteGuardado : "Nuevo");
+
+        document.getElementById('resumen-subtotal').innerText = "$" + subtotal.toFixed(2);
+        document.getElementById('resumen-iva').innerText = "$" + iva.toFixed(2);
+        document.getElementById('resumen-total').innerText = "$" + totalFinal.toFixed(2);
+        document.getElementById('ticket-total-pantalla').innerText = "$" + totalFinal.toFixed(2);
+
+        // Renderizar bloque del ítem con el conteo visible de prendas
+        const contenedor = document.getElementById('contenedor-servicios-reales');
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <div class="bg-gray-50 rounded-2xl p-4 flex items-start justify-between relative group">
+                    <div class="flex space-x-3">
+                        <span class="material-symbols-outlined text-blue-600 bg-white p-2 rounded-xl border border-gray-100 shadow-2xs">local_laundry_service</span>
+                        <div>
+                            <p class="text-xs font-extrabold text-gray-800">${servicioSeleccionado}</p>
+                            <p class="text-[11px] text-gray-400 font-medium mt-0.5">${detallesPrendas} · <span class="font-bold text-gray-600">${cantidadPiezas} prendas</span></p>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col justify-between h-full min-h-[45px]">
+                        <a href="/servicios" class="text-blue-500 hover:text-blue-700 text-[11px] font-bold flex items-center justify-end space-x-0.5 no-underline">
+                            <span class="material-symbols-outlined text-[12px]">edit</span><span>Editar</span>
+                        </a>
+                        <p class="text-xs font-black text-blue-600 mt-2">$${subtotal.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Asignar los datos finales a los campos ocultos del formulario POST de Spring Boot
+        document.getElementById('input-hidden-nombre').value = nombreGuardado;
+        document.getElementById('input-hidden-id-cliente').value = idClienteGuardado;
+        document.getElementById('input-hidden-telefono').value = telefonoGuardado;
+        document.getElementById('input-hidden-servicio').value = servicioSeleccionado;
+        document.getElementById('input-hidden-piezas').value = cantidadPiezas;
+        document.getElementById('input-hidden-total').value = totalFinal.toFixed(2);
+        document.getElementById('input-hidden-descripcion').value = detallesPrendas;
+    }
+
+    function abrirModalExito() {
+        sincronizarDatosFormulario();
+
+        const circulo = document.getElementById('circulo-paso4');
+        const contenido = document.getElementById('contenido-paso4');
+        const texto = document.getElementById('texto-paso4');
+
+        if (circulo && contenido && texto) {
+            circulo.classList.remove('bg-[#0a369d]');
+            circulo.classList.add('bg-green-600');
+            texto.classList.remove('text-[#0a369d]');
+            texto.classList.add('text-green-600');
+            contenido.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+        }
+
+        const modal = document.getElementById('modal-exito');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.querySelector('form').classList.remove('scale-95');
+            modal.querySelector('form').classList.add('scale-100');
+        }, 10);
+    }
+
+    function confirmarYGuardarDefinitivo() {
+        // Garantizar que la última sincronización esté hecha antes de enviar a Spring Boot
+        sincronizarDatosFormulario();
+
+        // Limpiar el LocalStorage para el siguiente ciclo
+        localStorage.clear();
+
+        // Enviar formulario hacia @PostMapping("/pedidos/guardar")
+        document.getElementById('form-finalizar-pedido').submit();
+    }
+</script>
+
+</body>
+</html>

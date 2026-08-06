@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Cortes de Caja - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen text-gray-800 overflow-hidden relative" style="font-family: 'Inter', sans-serif;">
+
+<!-- SIDEBAR -->
+<div class="w-64 bg-[#0a369d] text-white flex flex-col justify-between shadow-lg shrink-0">
+    <div>
+        <div class="h-16 bg-[#041231] flex items-center justify-center">
+            <img th:src="@{/sulaundry.jpeg}" src="/sulaundry.jpeg" alt="SU Laundry Logo" class="h-full w-full object-cover">
+        </div>
+
+        <nav class="mt-6 px-4 space-y-2">
+            <a th:href="@{/index}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Inicio</span>
+            </a>
+            <a th:href="@{/pedidos}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a th:href="@{/clientes}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/inventario}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Inventario</span>
+            </a>
+            <a th:href="@{/caja}" class="flex items-center space-x-3 bg-[#cbdcf7] text-[#0a369d] py-3 px-4 rounded-xl font-semibold shadow-xs">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                <span>Caja</span>
+            </a>
+            <a th:href="@{/reportes}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Reportes</span>
+            </a>
+            <a th:href="@{/perfil}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-white/10 text-xs text-white/60">
+        Sesión: <span>Paulina Martínez</span>
+    </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">¡Bienvenido a <span class="text-[#0a369d]">SU</span>, <span>Pau</span>!</h1>
+            <p class="text-xs text-gray-500">Resumen general de tu lavandería</p>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="relative">
+                <input type="text" placeholder="Buscar orden, cliente, prenda..." class="w-64 bg-gray-100 text-sm py-2 pl-4 pr-10 rounded-lg border border-transparent focus:outline-none focus:bg-white focus:border-gray-300 transition">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute right-3 top-2.5"></i>
+            </div>
+            <button class="relative p-1 text-gray-400 hover:text-gray-600">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            <div class="relative">
+                <button id="btn-usuario-menu" class="flex items-center space-x-3 border-l border-gray-200 pl-6 hover:opacity-80 transition cursor-pointer text-left focus:outline-none">
+                    <div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold shrink-0">PM</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-semibold text-gray-700">Paulina Martínez</p>
+                        <p class="text-xs text-gray-400">Administradora</p>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="p-8 flex flex-1 flex-col overflow-hidden relative space-y-6">
+
+        <!-- BREADCRUMB & HEADER TITLES -->
+        <div class="flex items-center justify-between shrink-0">
+            <div>
+                <nav class="flex items-center space-x-2 text-xs text-gray-400 mb-1">
+                    <a th:href="@{/caja}" class="hover:text-gray-600">Caja</a>
+                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                    <span class="text-gray-600 font-medium">Historial de cortes</span>
+                </nav>
+                <h2 class="text-2xl font-bold text-gray-900">Todos los cortes de caja</h2>
+                <p class="text-xs text-gray-500 mt-0.5">Consulta y revisa todos los cortes de caja realizados.</p>
+            </div>
+
+            <!-- FILTROS Y EXPORTAR (CORREGIDO Y OPTIMIZADO) -->
+            <form th:action="@{/caja/cortes}" method="GET" class="flex items-center space-x-3">
+                <div class="relative">
+                    <select name="turno" class="appearance-none bg-white border border-gray-200 rounded-xl py-2 pl-4 pr-9 text-xs font-medium text-gray-600 shadow-xs focus:outline-none cursor-pointer">
+                        <option value="" th:selected="${param.turno == null or param.turno[0] == ''}">Todos los turnos</option>
+                        <option value="Matutino" th:selected="${param.turno != null and param.turno[0] == 'Matutino'}">Matutino</option>
+                        <option value="Vespertino" th:selected="${param.turno != null and param.turno[0] == 'Vespertino'}">Vespertino</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 absolute right-3 top-3 pointer-events-none"></i>
+                </div>
+
+                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium text-gray-600 shadow-xs space-x-2">
+                    <input type="date" name="fechaInicio" th:value="${param.fechaInicio}" class="w-28 text-center focus:outline-none bg-transparent text-xs text-gray-600 cursor-pointer">
+                    <span class="text-gray-400">–</span>
+                    <input type="date" name="fechaFin" th:value="${param.fechaFin}" class="w-28 text-center focus:outline-none bg-transparent text-xs text-gray-600 cursor-pointer">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-400 ml-1 pointer-events-none"></i>
+                </div>
+
+                <button type="submit" class="flex items-center space-x-2 border border-blue-200 bg-blue-50/50 rounded-xl py-2 px-4 text-xs font-semibold text-[#0a369d] hover:bg-blue-50 transition cursor-pointer shadow-xs">
+                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
+                    <span>Filtros</span>
+                </button>
+
+                <!-- REEMPLAZAR EL BOTÓN DE EXPORTAR ACTUAL POR ESTE -->
+                <a th:href="@{/caja/cortes/exportar(turno=${param.turno}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}"
+                   class="flex items-center space-x-2 border border-blue-200 bg-blue-50/50 rounded-xl py-2 px-4 text-xs font-semibold text-[#0a369d] hover:bg-blue-50 transition cursor-pointer shadow-xs">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>Exportar</span>
+                </a>
+            </form>
+        </div>
+
+        <!-- METRICS CARDS -->
+        <div class="grid grid-cols-4 gap-4 shrink-0">
+            <!-- TOTAL CORTES -->
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                    <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">TOTAL CORTES</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${totalElementos != null ? totalElementos : '0'}">0</p>
+                    <p class="text-[10px] text-gray-400 font-medium mt-0.5">En el período seleccionado</p>
+                </div>
+            </div>
+
+            <!-- TOTAL INGRESOS -->
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                    <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">TOTAL INGRESOS</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${sumIngresos != null ? ('$' + #numbers.formatDecimal(sumIngresos, 1, 'COMMA', 2, 'POINT')) : '$0.00'}">$0.00</p>
+                    <p class="text-[10px] text-gray-400 font-medium mt-0.5">En el período seleccionado</p>
+                </div>
+            </div>
+
+            <!-- TOTAL GASTOS -->
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center shrink-0">
+                    <i data-lucide="target" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">TOTAL GASTOS</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${sumGastos != null ? ('$' + #numbers.formatDecimal(sumGastos, 1, 'COMMA', 2, 'POINT')) : '$0.00'}">$0.00</p>
+                    <p class="text-[10px] text-gray-400 font-medium mt-0.5">En el período seleccionado</p>
+                </div>
+            </div>
+
+            <!-- TOTAL NETO -->
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-xs flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                    <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">TOTAL NETO</p>
+                    <p class="text-xl font-black text-gray-900 mt-0.5" th:text="${sumNeto != null ? ('$' + #numbers.formatDecimal(sumNeto, 1, 'COMMA', 2, 'POINT')) : '$0.00'}">$0.00</p>
+                    <p class="text-[10px] text-gray-400 font-medium mt-0.5">En el período seleccionado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN TABLE CONTAINER -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-xs p-6 flex-1 flex flex-col justify-between overflow-hidden">
+            <div class="overflow-y-auto pr-1">
+                <table class="w-full text-left text-xs text-gray-600 border-collapse">
+                    <thead>
+                    <tr class="text-gray-400 uppercase border-b border-gray-100 font-semibold text-[11px] tracking-wider">
+                        <th class="pb-3.5">FECHA</th>
+                        <th class="pb-3.5">TURNO</th>
+                        <th class="pb-3.5">RESPONSABLE</th>
+                        <th class="pb-3.5 text-emerald-600">INGRESOS</th>
+                        <th class="pb-3.5 text-rose-600">GASTOS</th>
+                        <th class="pb-3.5">TOTAL</th>
+                        <th class="pb-3.5">DIFERENCIA</th>
+                        <th class="pb-3.5 text-center">ESTADO</th>
+                        <th class="pb-3.5 text-center w-16">ACCIONES</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 font-medium text-gray-700">
+                    <tr th:each="corte : ${cortes}" class="hover:bg-gray-50/50 transition">
+                        <td class="py-3.5 text-gray-500 font-normal" th:text="${#dates.format(corte.fecha, 'yyyy-MM-dd') + ' ' + (corte.horaInicio != null ? corte.horaInicio : '08:00 AM')}">2026-07-30 08:00 AM</td>
+                        <td class="py-3.5" th:text="${corte.turno}">Vespertino</td>
+                        <td class="py-3.5 text-gray-500" th:text="${corte.nombreResponsable}">Ana Martínez</td>
+                        <td class="py-3.5 text-emerald-600 font-bold" th:text="${'$' + #numbers.formatDecimal(corte.ingresos, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+                        <td class="py-3.5 text-rose-600 font-bold" th:text="${'$' + #numbers.formatDecimal(corte.gastos, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+                        <td class="py-3.5 font-bold text-gray-900" th:text="${'$' + #numbers.formatDecimal(corte.totalCalculado, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+
+                        <td class="py-3.5 font-bold"
+                            th:classappend="${corte.diferencia < 0 ? 'text-rose-600' : (corte.diferencia > 0 ? 'text-emerald-600' : 'text-gray-400')}"
+                            th:text="${(corte.diferencia > 0 ? '+$' : '$') + #numbers.formatDecimal(corte.diferencia, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+
+                        <td class="py-3.5 text-center">
+                            <span th:if="${corte.diferencia == 0}" class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">CUADRADO</span>
+                            <span th:if="${corte.diferencia != 0}" class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">REVISIÓN</span>
+                        </td>
+
+                        <td class="py-3.5 text-center">
+                            <button class="p-1 text-gray-400 hover:text-gray-600 cursor-pointer transition">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(cortes)}">
+                        <td colspan="9" class="py-8 text-center text-gray-400 font-medium">No se encontraron registros de cortes de caja en este período.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINACIÓN AUTOMÁTICA CON CONSERVACIÓN DE FILTROS -->
+            <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-2 text-xs text-gray-400 font-medium shrink-0"
+                 th:with="pActual=${paginaActual != null ? paginaActual : 1},
+                          pTotales=${totalPaginas != null && totalPaginas > 0 ? totalPaginas : 1},
+                          tElem=${totalElementos != null ? totalElementos : #lists.size(cortes)}">
+
+                <!-- Leyenda del Rango -->
+                <span>
+                    Mostrando
+                    <span class="text-gray-700 font-bold" th:text="${tElem == 0 ? 0 : ((pActual - 1) * 10) + 1}">1</span>
+                    a
+                    <span class="text-gray-700 font-bold" th:text="${(pActual * 10) > tElem ? tElem : (pActual * 10)}">10</span>
+                    de
+                    <span class="text-gray-700 font-bold" th:text="${tElem}">10</span> cortes
+                </span>
+
+                <!-- Bloque de Botones de Paginación -->
+                <div class="flex items-center space-x-1.5" th:if="${pTotales > 0}">
+
+                    <!-- Botón Anterior -->
+                    <a th:href="@{/caja/cortes(page=${pActual - 1}, turno=${param.turno}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}"
+                       th:classappend="${pActual == 1} ? 'pointer-events-none opacity-40' : 'hover:bg-gray-50 text-gray-500'"
+                       class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded-xl transition cursor-pointer">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </a>
+
+                    <!-- Bucle de Botones Numéricos 1..totalPaginas -->
+                    <th:block th:each="i : ${#numbers.sequence(1, pTotales)}">
+                        <!-- Página Seleccionada Actual (Azul) -->
+                        <span th:if="${i == pActual}"
+                              class="w-8 h-8 flex items-center justify-center bg-[#0a369d] text-white font-bold rounded-xl shadow-xs"
+                              th:text="${i}">1</span>
+
+                        <!-- Otras Páginas Disponibles (Gris) -->
+                        <a th:if="${i != pActual}"
+                           th:href="@{/caja/cortes(page=${i}, turno=${param.turno}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}"
+                           class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-gray-50 text-gray-600 font-medium transition cursor-pointer"
+                           th:text="${i}">2</a>
+                    </th:block>
+
+                    <!-- Botón Siguiente -->
+                    <a th:href="@{/caja/cortes(page=${pActual + 1}, turno=${param.turno}, fechaInicio=${param.fechaInicio}, fechaFin=${param.fechaFin})}"
+                       th:classappend="${pActual == pTotales} ? 'pointer-events-none opacity-40' : 'hover:bg-gray-50 text-gray-500'"
+                       class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded-xl transition cursor-pointer">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+    });
+</script>
+</body>
+</html>

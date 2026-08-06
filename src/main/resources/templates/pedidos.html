@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - SU Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f4f6fa] flex h-screen text-gray-800 overflow-hidden" style="font-family: 'Inter', sans-serif;">
+
+<div class="w-64 bg-[#0a369d] text-white flex flex-col justify-between shadow-lg shrink-0">
+    <!-- ... (Menú lateral sin cambios) ... -->
+    <div>
+        <div class="h-16 bg-[#041231] flex items-center justify-center">
+            <img src="/sulaundry.jpeg" alt="SU Laundry Logo" class="h-full w-full object-cover">
+        </div>
+
+        <nav class="mt-6 px-4 space-y-2">
+            <a th:href="@{/index}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Inicio</span>
+            </a>
+            <a th:href="@{/pedidos}" class="flex items-center space-x-3 bg-[#cbdcf7] text-[#0a369d] py-3 px-4 rounded-xl font-semibold shadow-xs">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a th:href="@{/clientes}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/inventario}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Inventario</span>
+            </a>
+            <a th:href="@{/caja}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                <span>Caja</span>
+            </a>
+            <a th:href="@{/reportes}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span>Reportes</span>
+            </a>
+            <a th:href="@{/perfil}" class="flex items-center space-x-3 text-white/80 hover:bg-white/10 hover:text-white py-3 px-4 rounded-xl transition font-medium">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-white/10 text-xs text-white/60">
+        Sesión: Paulina Martínez
+    </div>
+</div>
+
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">
+        <!-- ... (Cabecera superior sin cambios) ... -->
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">¡Bienvenido a <span class="text-[#0a369d]">SU</span>, Pau!</h1>
+            <p class="text-xs text-gray-500">Resumen general de tu lavandería</p>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="relative">
+                <input type="text" id="buscador-general" placeholder="Buscar orden, cliente, prenda..."
+                       class="w-64 bg-gray-100 text-sm py-2 pl-4 pr-10 rounded-lg border border-transparent focus:outline-none focus:bg-white focus:border-gray-300 transition">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute right-3 top-2.5"></i>
+            </div>
+            <button class="relative p-1 text-gray-400 hover:text-gray-600">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            <div class="relative">
+                <button id="btn-usuario-menu" class="flex items-center space-x-3 border-l border-gray-200 pl-6 hover:opacity-80 transition cursor-pointer text-left focus:outline-none">
+                    <div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold shrink-0">
+                        PM
+                    </div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-semibold text-gray-700">Paulina Martínez</p>
+                        <p class="text-xs text-gray-400">Administradora</p>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 ml-1"></i>
+                </button>
+
+                <div id="menu-usuario-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl border border-gray-100 shadow-xl py-2 z-50 hidden opacity-0 transition-all duration-200 origin-top-right transform scale-95">
+                    <a th:href="@{/perfil}" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition">
+                        <i data-lucide="user" class="w-4 h-4 text-gray-400"></i>
+                        <span>Mi Perfil</span>
+                    </a>
+                    <hr class="border-gray-100 my-1">
+                    <a th:href="@{/}" class="w-full flex items-center space-x-2.5 px-4 py-2.5 text-xs font-bold text-red-600 hover:bg-red-50/50 transition cursor-pointer text-left">
+                        <i data-lucide="log-out" class="w-4 h-4 text-red-500"></i>
+                        <span>Cerrar sesión</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-8 flex flex-1 space-x-6 overflow-hidden items-start">
+
+        <div class="flex-1 flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden">
+            <!-- ... (Tabla central sin cambios) ... -->
+            <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <input type="text" id="filtro-tabla" placeholder="Buscar cliente o pedido" class="w-56 bg-gray-50 border border-gray-200 rounded-xl py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-[#0a369d] transition">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    </div>
+
+                    <div class="relative">
+                        <select id="select-estado" class="appearance-none bg-gray-50 border border-gray-200 rounded-xl py-2 pl-4 pr-9 text-xs font-medium text-gray-600 focus:outline-none cursor-pointer">
+                            <option value="Todos">Estado: Todos</option>
+                            <option value="Listo">Listo</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="Pendiente">Pendiente</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 absolute right-3 top-3 pointer-events-none"></i>
+                    </div>
+                </div>
+                <button class="flex items-center space-x-2 border border-gray-200 rounded-xl py-2 px-4 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition cursor-pointer">
+                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
+                    <span>Filtros</span>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto min-h-0">
+                <table class="w-full text-left text-xs text-gray-600 border-collapse">
+                    <thead>
+                    <tr class="text-gray-400 uppercase border-b border-gray-100 sticky top-0 bg-white z-10">
+                        <th class="pb-3 font-semibold w-16">Orden</th>
+                        <th class="pb-3 font-semibold">Cliente</th>
+                        <th class="pb-3 font-semibold">Tipo de lavado</th>
+                        <th class="pb-3 font-semibold text-center w-20">Prendas</th>
+                        <th class="pb-3 font-semibold w-28">Estado</th>
+                        <th class="pb-3 font-semibold w-24">Entrega</th>
+                        <th class="pb-3 font-semibold w-20">Total</th>
+                        <th class="pb-3 font-semibold text-center w-24">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 font-medium text-gray-700" id="tabla-pedidos-body">
+                    <tr th:each="pedido : ${pedidos}"
+                        th:data-id="${pedido.idPedido}"
+                        th:data-orden="'#' + ${pedido.idPedido}"
+                        th:data-cliente="${pedido.nombreCliente}"
+                        th:data-lavado="${pedido.tipoServicio}"
+                        th:data-prendas="${pedido.totalPiezas}"
+                        th:data-estado="${pedido.estado}"
+                        th:data-entrega="${pedido.fechaEntrega}"
+                        th:data-total="'$' + ${#numbers.formatDecimal(pedido.total, 1, 2)}"
+                        class="fila-pedido hover:bg-gray-50/50 transition cursor-pointer">
+
+                        <td class="py-3.5 text-gray-400 font-normal" th:text="'#' + ${pedido.idPedido}">#1032</td>
+                        <td class="py-3.5 font-semibold text-gray-900" th:text="${pedido.nombreCliente}">Maria Lopez</td>
+                        <td class="py-3.5 text-gray-500" th:text="${pedido.tipoServicio}">Lavado y planchado</td>
+                        <td class="py-3.5 text-center" th:text="${pedido.totalPiezas}">5</td>
+                        <td class="py-3.5">
+                            <span th:text="${pedido.estado}"
+                                  th:class="${pedido.estado == 'Listo' ? 'bg-green-100 text-green-700 px-2.5 py-1 rounded-md text-[10px] font-bold' :
+                                             (pedido.estado == 'En proceso' ? 'bg-amber-100 text-amber-700 px-2.5 py-1 rounded-md text-[10px] font-bold' :
+                                             'bg-red-100 text-red-700 px-2.5 py-1 rounded-md text-[10px] font-bold')}">
+                                Listo
+                            </span>
+                        </td>
+                        <td class="py-3.5 text-gray-500" th:text="${pedido.fechaEntrega}">06/06/2026</td>
+                        <td class="py-3.5 font-bold text-gray-900" th:text="'$' + ${#numbers.formatDecimal(pedido.total, 1, 2)}">$250.00</td>
+                        <td class="py-3.5 flex items-center justify-center space-x-3">
+                            <button class="p-1 text-gray-400 hover:text-gray-600 cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                            <button type="button" th:onclick="'confirmarBorrado(' + ${pedido.idPedido} + ')'" class="p-1 text-gray-400 hover:text-red-500 cursor-pointer de-borrar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-2 shrink-0 text-xs text-gray-400 font-medium">
+                <span id="txt-contador">Mostrando los registros de pedidos activos</span>
+                <div class="flex items-center space-x-1.5">
+                    <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 transition cursor-pointer"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button class="w-7 h-7 flex items-center justify-center bg-[#0a369d] text-white font-bold rounded-lg shadow-sm">1</button>
+                    <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 transition cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-80 flex flex-col space-y-4 h-full shrink-0">
+            <a th:href="@{/servicios}" class="w-full bg-[#0a369d] text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center space-x-2 shadow-md shadow-blue-900/10 hover:bg-[#082c7f] transition text-sm">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Nuevo pedido</span>
+            </a>
+
+            <div class="flex-1 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex flex-col justify-between overflow-y-auto">
+                <div id="contenedor-detalles-dinamicos">
+                    <h3 class="text-sm font-bold text-gray-800 mb-4">Detalle del pedido</h3>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="det-orden" class="text-lg font-black text-gray-900">#---</span>
+
+                        <!-- NUEVO: Selector de Estado Dinámico -->
+                        <span id="det-badge-empty" class="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase">---</span>
+
+                        <form th:action="@{/pedidos/actualizar-estado}" method="POST" id="form-cambiar-estado" class="hidden m-0">
+                            <input type="hidden" name="idPedido" id="input-cambiar-estado-id">
+                            <select name="estado" id="select-cambiar-estado" onchange="this.form.submit()"
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase cursor-pointer outline-none appearance-none text-center">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Listo">Listo</option>
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="bg-gray-100/70 p-3 rounded-xl flex items-center space-x-3 mb-5">
+                        <div class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p id="det-cliente" class="text-xs font-bold text-gray-800">Selecciona un pedido</p>
+                            <p class="text-[10px] font-medium text-gray-400 mt-0.5">Cliente Frecuente</p>
+                        </div>
+                    </div>
+
+                    <div class="text-xs space-y-3.5 font-medium">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Tipo de lavado</span>
+                            <span id="det-lavado" class="text-gray-800 font-semibold">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Entrega Estimada</span>
+                            <span id="det-entrega" class="text-gray-800 font-semibold">---</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Prendas</span>
+                            <span id="det-prendas" class="text-gray-800 font-semibold">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <div class="flex justify-between items-baseline mb-4">
+                        <span class="text-xs font-semibold text-gray-400">Total</span>
+                        <span id="det-total" class="text-xl font-black text-blue-600">$0.00</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="flex items-center justify-center space-x-1.5 border border-gray-200 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition cursor-pointer">
+                            <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                            <span>Editar</span>
+                        </button>
+                        <button id="btn-eliminar-lateral" type="button" class="flex items-center justify-center space-x-1.5 bg-red-600 py-2 rounded-xl text-xs font-bold text-white hover:bg-red-700 transition cursor-pointer shadow-sm">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            <span>Borrar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Modales -->
+<div id="modal-confirmar-borrar" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full mx-4 shadow-2xl text-center border border-gray-100">
+        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="alert-triangle" class="w-8 h-8 stroke-[2.5]"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900">¿Eliminar Pedido?</h3>
+        <p class="text-xs text-gray-500 mt-1 mb-5">Esta acción eliminará el pedido <span id="txt-modal-orden" class="font-bold text-gray-800">#</span> permanentemente.</p>
+
+        <form th:action="@{/pedidos/eliminar}" method="POST" id="form-borrar-pedido" class="grid grid-cols-2 gap-3">
+            <input type="hidden" name="idPedido" id="input-borrar-id">
+            <button type="button" onclick="cerrarModalBorrar()" class="w-full border border-gray-200 text-gray-600 py-2.5 rounded-xl font-bold text-xs hover:bg-gray-50 transition cursor-pointer">
+                Cancelar
+            </button>
+            <button type="submit" class="w-full bg-red-600 text-white py-2.5 rounded-xl font-bold text-xs hover:bg-red-700 transition cursor-pointer shadow-sm">
+                Sí, Eliminar
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    let idPedidoSeleccionado = null;
+
+    const filas = document.querySelectorAll('.fila-pedido');
+
+    const detOrden = document.getElementById('det-orden');
+    const detCliente = document.getElementById('det-cliente');
+    const detLavado = document.getElementById('det-lavado');
+    const detEntrega = document.getElementById('det-entrega');
+    const detPrendas = document.getElementById('det-prendas');
+    const detTotal = document.getElementById('det-total');
+
+    // Variables del nuevo selector
+    const badgeEmpty = document.getElementById('det-badge-empty');
+    const formEstado = document.getElementById('form-cambiar-estado');
+    const selectEstado = document.getElementById('select-cambiar-estado');
+    const inputEstadoId = document.getElementById('input-cambiar-estado-id');
+
+    filas.forEach(fila => {
+        fila.addEventListener('click', (e) => {
+            if(e.target.closest('.de-borrar') || e.target.closest('form')) return;
+
+            idPedidoSeleccionado = fila.dataset.id;
+            const orden = fila.dataset.orden;
+            const cliente = fila.dataset.cliente;
+            const lavado = fila.dataset.lavado;
+            const prendas = fila.dataset.prendas;
+            const estado = fila.dataset.estado;
+            const entrega = fila.dataset.entrega;
+            const total = fila.dataset.total;
+
+            detOrden.textContent = orden;
+            detCliente.textContent = cliente;
+            detLavado.textContent = lavado;
+            detEntrega.textContent = entrega ? entrega : 'Pendiente';
+            detPrendas.textContent = prendas + " prendas";
+            detTotal.textContent = total;
+
+            // Mostrar el formulario interactivo y ocultar el estático
+            badgeEmpty.classList.add('hidden');
+            formEstado.classList.remove('hidden');
+
+            // Asignar los valores al formulario
+            inputEstadoId.value = idPedidoSeleccionado;
+            selectEstado.value = estado;
+
+            // Colorear el desplegable según el estado
+            selectEstado.className = "px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase cursor-pointer outline-none appearance-none text-center transition shadow-sm ";
+            if (estado === 'Listo') {
+                selectEstado.classList.add('bg-green-100', 'text-green-700', 'hover:bg-green-200');
+            } else if (estado === 'En proceso') {
+                selectEstado.classList.add('bg-amber-100', 'text-amber-700', 'hover:bg-amber-200');
+            } else {
+                selectEstado.classList.add('bg-red-100', 'text-red-700', 'hover:bg-red-200');
+            }
+        });
+    });
+
+    function confirmarBorrado(id) {
+        document.getElementById('input-borrar-id').value = id;
+        document.getElementById('txt-modal-orden').textContent = '#' + id;
+        document.getElementById('modal-confirmar-borrar').classList.remove('hidden');
+    }
+
+    function cerrarModalBorrar() {
+        document.getElementById('modal-confirmar-borrar').classList.add('hidden');
+    }
+
+    document.getElementById('btn-eliminar-lateral').addEventListener('click', () => {
+        if (idPedidoSeleccionado) {
+            confirmarBorrado(idPedidoSeleccionado);
+        } else {
+            alert('Por favor selecciona un pedido de la lista primero.');
+        }
+    });
+
+    document.getElementById('filtro-tabla').addEventListener('input', function(e) {
+        const texto = e.target.value.toLowerCase();
+        filas.forEach(fila => {
+            const cliente = (fila.dataset.cliente || '').toLowerCase();
+            const orden = (fila.dataset.orden || '').toLowerCase();
+            if(cliente.includes(texto) || orden.includes(texto)) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+    });
+
+    // Menú superior derecho
+    const btnUsuarioMenu = document.getElementById('btn-usuario-menu');
+    const menuUsuarioDropdown = document.getElementById('menu-usuario-dropdown');
+
+    if (btnUsuarioMenu && menuUsuarioDropdown) {
+        btnUsuarioMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = menuUsuarioDropdown.classList.contains('hidden');
+            if (isHidden) {
+                menuUsuarioDropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    menuUsuarioDropdown.classList.remove('opacity-0', 'scale-95');
+                    menuUsuarioDropdown.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                ocultarDropdownUsuario();
+            }
+        });
+
+        function ocultarDropdownUsuario() {
+            menuUsuarioDropdown.classList.remove('opacity-100', 'scale-100');
+            menuUsuarioDropdown.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => menuUsuarioDropdown.classList.add('hidden'), 200);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!menuUsuarioDropdown.contains(e.target) && !btnUsuarioMenu.contains(e.target)) {
+                ocultarDropdownUsuario();
+            }
+        });
+    }
+</script>
+</body>
+</html>
